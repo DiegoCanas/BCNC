@@ -1,0 +1,52 @@
+name: Deploy Helm Chart to GKE
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
+      GKE_ZONE: ${{ secrets.GKE_ZONE }}
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+      REFERENCE_REGISTRY: reference.gcr.io
+      INSTANCE_REGISTRY: instance.gcr.io
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          version: "latest"
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Authenticate to GKE
+        run: |
+          gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $PROJECT_ID
+
+      - name: Set up Helm
+        run: |
+          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
+      - name: Set Up Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Copy Helm Charts
+        run: |
+          cd Challenge2/copy_helm_charts
+          terraform init
+          terraform apply -auto-approve -var "reference_registry=$REFERENCE_REGISTRY" -var "instance_registry=$INSTANCE_REGISTRY" -var "charts_to_copy=[{\"name\":\"ping\",\"version\":\"0.1.0\"}]"
+
+      - name: Deploy Helm Chart
+        run: |
+          helm repo add instance $INSTANCE_REGISTRY
+          helm repo update
+          helm install ping instance/ping --version 0.1.0

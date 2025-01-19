@@ -91,8 +91,6 @@ Challenge 2
 - terraform.vars: Definición de una serie de valores para las variables.
 - variables.tf: Definición de las variables que se utilizan en el archivo main.tf
 
-        Nota: Es necesario el archivo .kube/config para que el
-
 El objetivo con esta estructura es buscar que el código sea sencillo de leer, escalable en el futuro y reutilizable. El hacerlo de forma modular nos acerca a este tipo de objetivo.
 
 #### Ejecución

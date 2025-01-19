@@ -4,15 +4,15 @@
 
 Objetivo: Cumplir una serie de restricciones
 
-##### Evitar pods en nodos determinados
+#### Evitar pods en nodos determinados
 
 Solución: Añadir un nodeSelector, modificamos chart de helm (el deployment.yaml) para que recoga los valores que le indicamos en el values. El valor que indicamos en el yaml es el grupo el cual se va a evitar en el momento del despliegue de los pods.
 
-##### Evitar un pod desplegado en un nodo donde hay un pod igual
+#### Evitar un pod desplegado en un nodo donde hay un pod igual
 
 Solución: Suponemos un micro de frontend el cual queremos que solo haya un pod por nodo, usaremos la Antiafinidad para evitar que hayan dos pods con el mismo label. Para indicar que sean en el mismo nodo especificaremos la topologia hostname.
 
-##### Evitar un pod desplegado en la misma zona
+#### Evitar un pod desplegado en la misma zona
 
 Solución: Usamos el mismo metodo previo pero, en este caso la topología será por zona
 
@@ -25,17 +25,17 @@ Básicamente lo que indicamos es que ejecutamos un comando netcat el cual va a e
 
 Para instalar este chart de helm en el cluster hay que ejecutar los siguientes comandos:
 
-helm repo add {nombre-registro} {url-registro}
-helm repo update
+helm repo add {nombre-registro} {url-registro}  
+helm repo update  
 helm install {nombre-release} {nombre-repo}/{chart-nombre} --namespace {nombre-namespace}
 
 Ej:
 
-helm repo add instance registro www.registro.io
-helm repo update
+helm repo add instance registro www.registro.io  
+helm repo update  
 helm install ping registro/ping --version 0.1.0
 
-### Archivos modificados: values.yaml - deployment.yaml
+#### Archivos modificados: values.yaml - deployment.yaml
 
 ## Challenge 2
 
@@ -57,8 +57,8 @@ El objetivo con esta estructura es buscar que el código sea sencillo de leer, e
 
 #### Ejecución
 
-terraform init
-terraform plan
+terraform init  
+terraform plan  
 terraform apply
 
 ## Challenge 3

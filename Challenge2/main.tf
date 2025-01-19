@@ -1,7 +1,5 @@
 provider "helm" {
-  kubernetes {
-    config_path = "~/.kube/config" 
-  }
+    # Proveedor de helm3
 }
 
 module "copy_helm_charts" {

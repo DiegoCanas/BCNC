@@ -1,18 +1,14 @@
 provider "helm" {
-  // Configured Helm provider
+  kubernetes {
+    config_path = "~/.kube/config" 
+  }
 }
 
-module "copy_charts" {
-  source = "./copy_helm_charts"
-
-  charts_to_copy = [
-    {
-      name    = "chart-1"
-      version = "1.2.3"
-    },
-    {
-      name    = "chart-2"
-      version = "1.2.3"
-    }
-  ]
+module "copy_helm_charts" {
+  source            = "./modules/copy_helm_charts"
+  for_each          = { for chart in var.charts_to_copy : chart.name => chart }
+  chart_name        = each.value.name
+  chart_version     = each.value.version
+  reference_registry = var.reference_registry
+  instance_registry  = var.instance_registry
 }

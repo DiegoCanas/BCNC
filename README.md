@@ -1,5 +1,43 @@
 # Challenge
 
+El objetivo de esta prueba es la resolción de tres challenges relacionados entre si.
+
+## Estructura de la prueba
+
+```plaintext
+.
+├── Challenge1
+│ └── ping
+│ ├── Chart.yaml
+│ ├── templates
+│ │ ├── deployment.yaml
+│ │ ├── \_helpers.tpl
+│ │ ├── hpa.yaml
+│ │ ├── ingress.yaml
+│ │ ├── NOTES.txt
+│ │ ├── serviceaccount.yaml
+│ │ ├── service.yaml
+│ │ └── tests
+│ │ └── test-connection.yaml
+│ └── values.yaml
+├── Challenge2
+│ ├── main.tf
+│ ├── modules
+│ │ └── copy_helm_charts
+│ │ ├── main.tf
+│ │ └── variables.tf
+│ ├── outputs.tf
+│ ├── terraform.tfstate
+│ ├── terraform.tfstate.backup
+│ ├── terraform.tfvars
+│ └── variables.tf
+├── Challenge3
+│ └── .github
+│ └── workflows
+│ └── helm-deploy.yaml
+└── README.md
+```
+
 ## Challenge 1
 
 Objetivo: Cumplir una serie de restricciones
@@ -68,6 +106,13 @@ Objetivo: Hacer un workflow el cual copie los archivos del registro de referenci
 Solución: Generamos un workflow el cual configure el SDK de google cloud y se identifique, prepare helm y terraform, ejecute la automatización de terraform y despliegue el chart en el cluster.
 
 Importante: Las variables de entorno se configuran como secretos.
+
+#### Variables de entorno
+
+- `PROJECT_ID`: ID del proyecto donde se trabaja en GCP
+- `GKE_CLUSTER`: Nombre del cluster de GKE
+- `GKE_ZONE`: Zona de disponibilidad del GKE
+- `GCP_SA_KEY`: Clave de la cuenta de servicio para identificarse en GCP
 
 #### Ejecución
 
